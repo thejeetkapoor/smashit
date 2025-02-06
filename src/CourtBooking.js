@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { sendEmail, sendCancellationEmail } from './emailService';
 
 const CourtBooking = ({ user }) => {
+    console.log("User object in CourtBooking:", user);
+
     const [bookings, setBookings] = useState({});
     const [selectedCourt, setSelectedCourt] = useState(null);
     const [selectedTime, setSelectedTime] = useState('');
