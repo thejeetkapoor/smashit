@@ -8,7 +8,7 @@ import { sendEmail, sendCancellationEmail } from './emailService';
 const CourtBooking = ({ user, onLogout }) => {
     console.log("User object in CourtBooking:", user);
 
-    if (!user?.email?.endsWith(".iitmandi.ac.in")) {
+    if (!user?.email?.endsWith("iitmandi.ac.in")) {
         alert("Access restricted to IIT Mandi email IDs.");
         onLogout();
         return null;
