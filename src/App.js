@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Auth from './Auth';
 import CourtBooking from './CourtBooking';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -9,11 +9,22 @@ function App() {
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-            setUser(authUser ? authUser : null); // Updates user state
+            setUser(authUser ? authUser : null);
         });
 
-        return () => unsubscribe(); // Cleanup on unmount
+        return () => unsubscribe();
     }, []);
+
+    // 🔴 Fix: Add a logout function
+    const handleLogout = () => {
+        const auth = getAuth();
+        signOut(auth)
+            .then(() => {
+                console.log("User logged out");
+                setUser(null); // Clear user state
+            })
+            .catch((error) => console.error("Logout error:", error));
+    };
 
     return (
         <div className="App">
@@ -22,7 +33,9 @@ function App() {
             ) : (
                 <div>
                     <h2>Welcome, {user.email}</h2>
-                    <CourtBooking user={user} />
+                    {/* ✅ Pass handleLogout to CourtBooking */}
+                    <CourtBooking user={user} onLogout={handleLogout} />
+                    <button onClick={handleLogout}>Logout</button> {/* Add logout button */}
                 </div>
             )}
         </div>
